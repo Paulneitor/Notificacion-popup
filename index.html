@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones en Tiempo Real</title>
+</head>
+<body>
+    <h1>Notificaciones en Tiempo Real</h1>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Verificar si las notificaciones están permitidas
+        if (Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Escuchar las notificaciones del servidor
+        socket.on('notification', (message) => {
+            console.log("Notificación recibida:", message);
+            if (Notification.permission === 'granted') {
+                new Notification(message);  // Mostrar notificación
+            } else {
+                alert(message);  // Mostrar alert como alternativa
+            }
+        });
+    </script>
+</body>
+</html>
